@@ -1,4 +1,4 @@
-package com.github.tvbox.ui.activity;
+package com.github.tvbox.osc.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,27 +20,27 @@ import android.widget.Toast;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.github.tvbox.R;
-import com.github.tvbox.api.ApiConfig;
-import com.github.tvbox.base.BaseActivity;
-import com.github.tvbox.bean.AbsXml;
-import com.github.tvbox.bean.Movie;
-import com.github.tvbox.bean.SourceBean;
-import com.github.tvbox.event.RefreshEvent;
-import com.github.tvbox.event.ServerEvent;
-import com.github.tvbox.server.ControlManager;
-import com.github.tvbox.ui.adapter.PinyinAdapter;
-import com.github.tvbox.ui.adapter.SearchAdapter;
-import com.github.tvbox.ui.dialog.RemoteDialog;
-import com.github.tvbox.ui.dialog.SearchCheckboxDialog;
-import com.github.tvbox.ui.tv.QRCodeGen;
-import com.github.tvbox.ui.tv.widget.SearchKeyboard;
-import com.github.tvbox.util.FastClickCheckUtil;
-import com.github.tvbox.util.HawkConfig;
-import com.github.tvbox.util.LOG;
-import com.github.tvbox.util.SearchHelper;
-import com.github.tvbox.util.js.JSEngine;
-import com.github.tvbox.viewmodel.SourceViewModel;
+import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.bean.AbsXml;
+import com.github.tvbox.osc.bean.Movie;
+import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.event.RefreshEvent;
+import com.github.tvbox.osc.event.ServerEvent;
+import com.github.tvbox.osc.server.ControlManager;
+import com.github.tvbox.osc.ui.adapter.PinyinAdapter;
+import com.github.tvbox.osc.ui.adapter.SearchAdapter;
+import com.github.tvbox.osc.ui.dialog.RemoteDialog;
+import com.github.tvbox.osc.ui.dialog.SearchCheckboxDialog;
+import com.github.tvbox.osc.ui.tv.QRCodeGen;
+import com.github.tvbox.osc.ui.tv.widget.SearchKeyboard;
+import com.github.tvbox.osc.util.FastClickCheckUtil;
+import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.util.LOG;
+import com.github.tvbox.osc.util.SearchHelper;
+import com.github.tvbox.osc.util.js.JSEngine;
+import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -63,6 +63,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import java.util.Arrays;
 
 /**
  * @author pj567
@@ -362,10 +364,13 @@ public class SearchActivity extends BaseActivity {
             showLoading();
             search(title);
         }
-        // 加载热词
+       // 加载热词
+        loadHotSearch();
+    }
+
+    //load hot search
+    private void loadHotSearch() {
         OkGo.<String>get("https://node.video.qq.com/x/api/hot_search")
-//        OkGo.<String>get("https://api.web.360kan.com/v1/rank")
-//                .params("cat", "1")
                 .params("channdlId", "0")
                 .params("_", System.currentTimeMillis())
                 .execute(new AbsCallback<String>() {
@@ -373,12 +378,22 @@ public class SearchActivity extends BaseActivity {
                     public void onSuccess(Response<String> response) {
                         try {
                             ArrayList<String> hots = new ArrayList<>();
-                            JsonArray itemList = JsonParser.parseString(response.body()).getAsJsonObject().get("data").getAsJsonObject().get("mapResult").getAsJsonObject().get("0").getAsJsonObject().get("listInfo").getAsJsonArray();
-//                            JsonArray itemList = JsonParser.parseString(response.body()).getAsJsonObject().get("data").getAsJsonArray();
-                            for (JsonElement ele : itemList) {
-                                JsonObject obj = (JsonObject) ele;
-                                hots.add(obj.get("title").getAsString().trim().replaceAll("<|>|《|》|-", "").split(" ")[0]);
+                            JsonObject mapResult = JsonParser.parseString(response.body())
+                                    .getAsJsonObject()
+                                    .get("data").getAsJsonObject()
+                                    .get("mapResult").getAsJsonObject();
+                            List<String> groupIndex = Arrays.asList("0", "1", "2", "3", "5");
+                            for(String index : groupIndex) {
+                                JsonArray itemList = mapResult.get(index).getAsJsonObject()
+                                        .get("listInfo").getAsJsonArray();
+                                for (JsonElement ele : itemList) {
+                                    JsonObject obj = (JsonObject) ele;
+                                    String hotKey = obj.get("title").getAsString().trim().replaceAll("<|>|《|》|-", "").split(" ")[0];
+                                    if(!hots.contains(hotKey))
+                                        hots.add(hotKey);
+                                }
                             }
+
                             wordAdapter.setNewData(hots);
                         } catch (Throwable th) {
                             th.printStackTrace();
@@ -390,7 +405,6 @@ public class SearchActivity extends BaseActivity {
                         return response.body().string();
                     }
                 });
-
     }
 
     private void refreshQRCode() {

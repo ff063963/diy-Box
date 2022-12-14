@@ -1,4 +1,4 @@
-package com.github.tvbox.ui.activity;
+package com.github.tvbox.osc.ui.activity;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -26,31 +26,31 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.viewpager.widget.ViewPager;
 
-import com.github.tvbox.R;
-import com.github.tvbox.api.ApiConfig;
-import com.github.tvbox.base.BaseActivity;
-import com.github.tvbox.base.BaseLazyFragment;
-import com.github.tvbox.bean.AbsSortXml;
-import com.github.tvbox.bean.MovieSort;
-import com.github.tvbox.bean.SourceBean;
-import com.github.tvbox.event.RefreshEvent;
-import com.github.tvbox.server.ControlManager;
-import com.github.tvbox.ui.adapter.HomePageAdapter;
-import com.github.tvbox.ui.adapter.SelectDialogAdapter;
-import com.github.tvbox.ui.adapter.SortAdapter;
-import com.github.tvbox.ui.dialog.SelectDialog;
-import com.github.tvbox.ui.dialog.TipDialog;
-import com.github.tvbox.ui.fragment.GridFragment;
-import com.github.tvbox.ui.fragment.UserFragment;
-import com.github.tvbox.ui.tv.widget.DefaultTransformer;
-import com.github.tvbox.ui.tv.widget.FixedSpeedScroller;
-import com.github.tvbox.ui.tv.widget.NoScrollViewPager;
-import com.github.tvbox.ui.tv.widget.ViewObj;
-import com.github.tvbox.util.AppManager;
-import com.github.tvbox.util.DefaultConfig;
-import com.github.tvbox.util.HawkConfig;
-import com.github.tvbox.util.LOG;
-import com.github.tvbox.viewmodel.SourceViewModel;
+import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.base.BaseActivity;
+import com.github.tvbox.osc.base.BaseLazyFragment;
+import com.github.tvbox.osc.bean.AbsSortXml;
+import com.github.tvbox.osc.bean.MovieSort;
+import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.event.RefreshEvent;
+import com.github.tvbox.osc.server.ControlManager;
+import com.github.tvbox.osc.ui.adapter.HomePageAdapter;
+import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
+import com.github.tvbox.osc.ui.adapter.SortAdapter;
+import com.github.tvbox.osc.ui.dialog.SelectDialog;
+import com.github.tvbox.osc.ui.dialog.TipDialog;
+import com.github.tvbox.osc.ui.fragment.GridFragment;
+import com.github.tvbox.osc.ui.fragment.UserFragment;
+import com.github.tvbox.osc.ui.tv.widget.DefaultTransformer;
+import com.github.tvbox.osc.ui.tv.widget.FixedSpeedScroller;
+import com.github.tvbox.osc.ui.tv.widget.NoScrollViewPager;
+import com.github.tvbox.osc.ui.tv.widget.ViewObj;
+import com.github.tvbox.osc.util.AppManager;
+import com.github.tvbox.osc.util.DefaultConfig;
+import com.github.tvbox.osc.util.HawkConfig;
+import com.github.tvbox.osc.util.LOG;
+import com.github.tvbox.osc.viewmodel.SourceViewModel;
 import com.orhanobut.hawk.Hawk;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
@@ -252,10 +252,19 @@ public class HomeActivity extends BaseActivity {
     private boolean dataInitOk = false;
     private boolean jarInitOk = false;
 
-    private void initData() {
+//数据源显示
+       // takagen99 : Switch to show / hide source title
+    boolean HomeShow = Hawk.get(HawkConfig.HOME_SHOW_SOURCE, false);
+    
+      private void initData() {
         SourceBean home = ApiConfig.get().getHomeSourceBean();
-        if (home != null && home.getName() != null && !home.getName().isEmpty())
-            tvName.setText(home.getName());
+
+        // takagen99 : Switch to show / hide source title
+        if (HomeShow) {
+            if (home != null && home.getName() != null && !home.getName().isEmpty())
+                tvName.setText(home.getName());
+        }
+
         if (dataInitOk && jarInitOk) {
             showLoading();
             sourceViewModel.getSort(ApiConfig.get().getHomeSourceBean().getKey());
@@ -266,6 +275,7 @@ public class HomeActivity extends BaseActivity {
             }
             return;
         }
+
         showLoading();
         if (dataInitOk && !jarInitOk) {
             if (!ApiConfig.get().getSpider().isEmpty()) {
@@ -606,13 +616,13 @@ public class HomeActivity extends BaseActivity {
             SelectDialog<SourceBean> dialog = new SelectDialog<>(HomeActivity.this);
             TvRecyclerView tvRecyclerView = dialog.findViewById(R.id.list);
             int spanCount;
-            spanCount = (int)Math.floor(sites.size()/60);
+            spanCount = (int)Math.floor(sites.size()/4);
             spanCount = Math.min(spanCount, 2);
-            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), spanCount+1));
+            tvRecyclerView.setLayoutManager(new V7GridLayoutManager(dialog.getContext(), spanCount));
             ConstraintLayout cl_root = dialog.findViewById(R.id.cl_root);
             ViewGroup.LayoutParams clp = cl_root.getLayoutParams();
-            clp.width = AutoSizeUtils.mm2px(dialog.getContext(), 380+200*spanCount);
-            dialog.setTip("请选择首页数据源");
+            clp.width = AutoSizeUtils.mm2px(dialog.getContext(), 300+140*spanCount);
+            dialog.setTip("首页固定数据源");
             dialog.setAdapter(new SelectDialogAdapter.SelectDialogInterface<SourceBean>() {
                 @Override
                 public void click(SourceBean value, int pos) {
