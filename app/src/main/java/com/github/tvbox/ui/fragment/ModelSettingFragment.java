@@ -1,4 +1,4 @@
-package com.github.tvbox.osc.ui.fragment;
+package com.github.tvbox.ui.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,28 +12,28 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.github.tvbox.osc.R;
-import com.github.tvbox.osc.api.ApiConfig;
-import com.github.tvbox.osc.base.BaseActivity;
-import com.github.tvbox.osc.base.BaseLazyFragment;
-import com.github.tvbox.osc.bean.IJKCode;
-import com.github.tvbox.osc.bean.SourceBean;
-import com.github.tvbox.osc.event.RefreshEvent;
-import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
-import com.github.tvbox.osc.ui.activity.HomeActivity;
-import com.github.tvbox.osc.ui.activity.SettingActivity;
-import com.github.tvbox.osc.ui.adapter.SelectDialogAdapter;
-import com.github.tvbox.osc.ui.dialog.AboutDialog;
-import com.github.tvbox.osc.ui.dialog.ApiDialog;
-import com.github.tvbox.osc.ui.dialog.BackupDialog;
-import com.github.tvbox.osc.ui.dialog.SearchRemoteTvDialog;
-import com.github.tvbox.osc.ui.dialog.SelectDialog;
-import com.github.tvbox.osc.ui.dialog.XWalkInitDialog;
-import com.github.tvbox.osc.util.FastClickCheckUtil;
-import com.github.tvbox.osc.util.HawkConfig;
-import com.github.tvbox.osc.util.HistoryHelper;
-import com.github.tvbox.osc.util.OkGoHelper;
-import com.github.tvbox.osc.util.PlayerHelper;
+import com.github.tvbox.R;
+import com.github.tvbox.api.ApiConfig;
+import com.github.tvbox.base.BaseActivity;
+import com.github.tvbox.base.BaseLazyFragment;
+import com.github.tvbox.bean.IJKCode;
+import com.github.tvbox.bean.SourceBean;
+import com.github.tvbox.event.RefreshEvent;
+import com.github.tvbox.player.thirdparty.RemoteTVBox;
+import com.github.tvbox.ui.activity.HomeActivity;
+import com.github.tvbox.ui.activity.SettingActivity;
+import com.github.tvbox.ui.adapter.SelectDialogAdapter;
+import com.github.tvbox.ui.dialog.AboutDialog;
+import com.github.tvbox.ui.dialog.ApiDialog;
+import com.github.tvbox.ui.dialog.BackupDialog;
+import com.github.tvbox.ui.dialog.SearchRemoteTvDialog;
+import com.github.tvbox.ui.dialog.SelectDialog;
+import com.github.tvbox.ui.dialog.XWalkInitDialog;
+import com.github.tvbox.util.FastClickCheckUtil;
+import com.github.tvbox.util.HawkConfig;
+import com.github.tvbox.util.HistoryHelper;
+import com.github.tvbox.util.OkGoHelper;
+import com.github.tvbox.util.PlayerHelper;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.model.Progress;
@@ -50,11 +50,11 @@ import java.util.List;
 import okhttp3.HttpUrl;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
-import com.github.tvbox.osc.ui.adapter.ApiHistoryDialogAdapter;
-import com.github.tvbox.osc.ui.dialog.ApiHistoryDialog;
+import com.github.tvbox.ui.adapter.ApiHistoryDialogAdapter;
+import com.github.tvbox.ui.dialog.ApiHistoryDialog;
 
 
-import com.github.tvbox.osc.ui.dialog.VersionDialog;
+import com.github.tvbox.ui.dialog.VersionDialog;
 
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
@@ -64,8 +64,8 @@ import me.jessyan.autosize.utils.AutoSizeUtils;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.ViewGroup;
 
-import com.github.tvbox.osc.util.FileUtils;
-import com.github.tvbox.osc.util.LOG;
+import com.github.tvbox.util.FileUtils;
+import com.github.tvbox.util.LOG;
 
 
 
