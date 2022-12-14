@@ -1,10 +1,10 @@
-package com.github.tvbox.osc.ui.dialog;
+package com.github.tvbox.ui.dialog;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.github.tvbox.osc.R;
+import com.github.tvbox.R;
 
 import org.jetbrains.annotations.NotNull;
 
