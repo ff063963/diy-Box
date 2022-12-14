@@ -146,7 +146,7 @@ public class HomeActivity extends BaseActivity {
                                 textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.color_FFFFFF));
                             } else {
                                 view.animate().scaleX(1.0f).scaleY(1.0f).setDuration(300).start();
-                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.color_FFFFFF));
+                                textView.setTextColor(HomeActivity.this.getResources().getColor(R.color.color_BBFFFFFF));
                                 view.findViewById(R.id.tvFilter).setVisibility(View.GONE);
                                 view.findViewById(R.id.tvFilterColor).setVisibility(View.GONE);
                             }
