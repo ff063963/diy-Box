@@ -1,4 +1,4 @@
-package com.github.tvbox.ui.dialog;
+package com.github.tvbox.osc.ui.dialog;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 
-import com.github.tvbox.R;
-import com.github.tvbox.bean.SourceBean;
-import com.github.tvbox.ui.adapter.CheckboxSearchAdapter;
-import com.github.tvbox.util.FastClickCheckUtil;
+import com.github.tvbox.osc.R;
+import com.github.tvbox.osc.bean.SourceBean;
+import com.github.tvbox.osc.ui.adapter.CheckboxSearchAdapter;
+import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.owen.tvrecyclerview.widget.TvRecyclerView;
 import com.owen.tvrecyclerview.widget.V7GridLayoutManager;
 import com.owen.tvrecyclerview.widget.V7LinearLayoutManager;
@@ -74,11 +74,11 @@ public class SearchCheckboxDialog extends BaseDialog{
         int size = mSourceList.size();
         int spanCount = (int) Math.floor(size / 10);
         if (spanCount <= 0) spanCount = 1;
-        if (spanCount > 3) spanCount = 3;
+        if (spanCount > 2) spanCount = 2;
         mGridView.setLayoutManager(new V7GridLayoutManager(getContext(), spanCount));
         View root = findViewById(R.id.root);
         ViewGroup.LayoutParams clp = root.getLayoutParams();
-        clp.width = AutoSizeUtils.mm2px(getContext(), 400 + 260 * (spanCount - 1));
+        clp.width = AutoSizeUtils.mm2px(getContext(), 300+140*spanCount);
 
         mGridView.setAdapter(checkboxSearchAdapter);
         checkboxSearchAdapter.setData(mSourceList, mCheckSourcees);
