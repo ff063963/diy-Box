@@ -1,16 +1,16 @@
-package com.github.tvbox.osc.util;
+package com.github.tvbox.util;
 
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.tvbox.osc.api.ApiConfig;
-import com.github.tvbox.osc.bean.IJKCode;
-import com.github.tvbox.osc.player.IjkMediaPlayer;
-import com.github.tvbox.osc.player.render.SurfaceRenderViewFactory;
-import com.github.tvbox.osc.player.thirdparty.Kodi;
-import com.github.tvbox.osc.player.thirdparty.MXPlayer;
-import com.github.tvbox.osc.player.thirdparty.ReexPlayer;
-import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
+import com.github.tvbox.api.ApiConfig;
+import com.github.tvbox.bean.IJKCode;
+import com.github.tvbox.player.IjkMediaPlayer;
+import com.github.tvbox.player.render.SurfaceRenderViewFactory;
+import com.github.tvbox.player.thirdparty.Kodi;
+import com.github.tvbox.player.thirdparty.MXPlayer;
+import com.github.tvbox.player.thirdparty.ReexPlayer;
+import com.github.tvbox.player.thirdparty.RemoteTVBox;
 import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONException;
