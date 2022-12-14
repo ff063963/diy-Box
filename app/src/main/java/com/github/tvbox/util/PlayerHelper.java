@@ -1,16 +1,16 @@
-package com.github.tvbox.util;
+package com.github.tvbox.osc.util;
 
 import android.app.Activity;
 import android.content.Context;
 
-import com.github.tvbox.api.ApiConfig;
-import com.github.tvbox.bean.IJKCode;
-import com.github.tvbox.player.IjkMediaPlayer;
-import com.github.tvbox.player.render.SurfaceRenderViewFactory;
-import com.github.tvbox.player.thirdparty.Kodi;
-import com.github.tvbox.player.thirdparty.MXPlayer;
-import com.github.tvbox.player.thirdparty.ReexPlayer;
-import com.github.tvbox.player.thirdparty.RemoteTVBox;
+import com.github.tvbox.osc.api.ApiConfig;
+import com.github.tvbox.osc.bean.IJKCode;
+import com.github.tvbox.osc.player.IjkMediaPlayer;
+import com.github.tvbox.osc.player.render.SurfaceRenderViewFactory;
+import com.github.tvbox.osc.player.thirdparty.Kodi;
+import com.github.tvbox.osc.player.thirdparty.MXPlayer;
+import com.github.tvbox.osc.player.thirdparty.ReexPlayer;
+import com.github.tvbox.osc.player.thirdparty.RemoteTVBox;
 import com.orhanobut.hawk.Hawk;
 
 import org.json.JSONException;
@@ -26,6 +26,9 @@ import xyz.doikki.videoplayer.player.PlayerFactory;
 import xyz.doikki.videoplayer.player.VideoView;
 import xyz.doikki.videoplayer.render.RenderViewFactory;
 import xyz.doikki.videoplayer.render.TextureRenderViewFactory;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 public class PlayerHelper {
     public static void updateCfg(VideoView videoView, JSONObject playerCfg) {
@@ -87,7 +90,7 @@ public class PlayerHelper {
     public static void updateCfg(VideoView videoView) {
         int playType = Hawk.get(HawkConfig.PLAY_TYPE, 0);
         PlayerFactory playerFactory;
-        if (playType == 1) {
+        if (playType == 2) {
             playerFactory = new PlayerFactory<IjkMediaPlayer>() {
                 @Override
                 public IjkMediaPlayer createPlayer(Context context) {
@@ -128,7 +131,9 @@ public class PlayerHelper {
         videoView.setRenderViewFactory(renderViewFactory);
     }
 
-
+  //  private static Map<Integer, String> AVAILABLE_3RD_PLAYERS = new TreeMap<Integer, String>();
+    
+    
     public static void init() {
         try {
             tv.danmaku.ijk.media.player.IjkMediaPlayer.loadLibrariesOnce(new IjkLibLoader() {
@@ -155,17 +160,44 @@ public class PlayerHelper {
         }
     }
 
+    
+      public static boolean playOn3rdPlayer(int playerType, Activity mActivity, String playingUrl, String playTitle, String playSubtitle, HashMap<String, String> playingHeader) {
+        boolean callResult = false;
+        switch (playerType) {
+            case 10: {
+                callResult = MXPlayer.run(mActivity, playingUrl, playTitle, playSubtitle, playingHeader);
+                break;
+            }
+            case 11: {
+                callResult = ReexPlayer.run(mActivity, playingUrl, playTitle, playSubtitle, playingHeader);
+                break;
+            }
+            case 12: {
+                callResult = Kodi.run(mActivity, playingUrl, playTitle, playSubtitle, playingHeader);
+            }
+        }
+        return callResult;
+    }
+
+    
+    
+    private static Map<Integer, String> AVAILABLE_3RD_PLAYERS = new TreeMap<Integer, String>();
+    
     private static HashMap<Integer, String> mPlayersInfo = null;
+    
     public static HashMap<Integer, String> getPlayersInfo() {
         if (mPlayersInfo == null) {
             HashMap<Integer, String> playersInfo = new HashMap<>();
-            playersInfo.put(0, "系统播放器");
-            playersInfo.put(1, "IJK播放器");
-            playersInfo.put(2, "Exo播放器");
-            playersInfo.put(10, "MX播放器");
-            playersInfo.put(11, "Reex播放器");
-            playersInfo.put(12, "Kodi播放器");
+            playersInfo.put(0, "系统");   
+            playersInfo.put(1, "IJK");
+            playersInfo.put(2, "Exo");
+       
+            playersInfo.put(10, "MX");
+            playersInfo.put(11, "Reex");
+            playersInfo.put(12, "Kodi");
+      
             playersInfo.put(13, "附近TVBox");
+       
             mPlayersInfo = playersInfo;
         }
         return mPlayersInfo;
@@ -178,10 +210,12 @@ public class PlayerHelper {
             playersExist.put(0, true);
             playersExist.put(1, true);
             playersExist.put(2, true);
+  
             playersExist.put(10, MXPlayer.getPackageInfo() != null);
             playersExist.put(11, ReexPlayer.getPackageInfo() != null);
             playersExist.put(12, Kodi.getPackageInfo() != null);
             playersExist.put(13, RemoteTVBox.getAvalible() != null);
+         
             mPlayersExistInfo = playersExist;
         }
         return mPlayersExistInfo;
@@ -232,12 +266,15 @@ public class PlayerHelper {
 
     public static String getRenderName(int renderType) {
         if (renderType == 1) {
-            return "SurfaceView";
+            return "Surface";
         } else {
-            return "TextureView";
+            return "Texture";
         }
     }
 
+    
+    
+    
     public static String getScaleName(int screenScaleType) {
         String scaleText = "默认";
         switch (screenScaleType) {
@@ -263,6 +300,8 @@ public class PlayerHelper {
         return scaleText;
     }
 
+
+    
     public static String getDisplaySpeed(long speed) {
         if(speed > 1048576)
             return (speed / 1048576) + "Mb/s";

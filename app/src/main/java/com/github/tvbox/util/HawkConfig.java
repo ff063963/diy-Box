@@ -1,4 +1,4 @@
-package com.github.tvbox.util;
+package com.github.tvbox.osc.util;
 
 /**
  * @author pj567
@@ -6,6 +6,7 @@ package com.github.tvbox.util;
  * @description:
  */
 public class HawkConfig {
+    public static final String HOME_SHOW_SOURCE = "show_source";
     public static final String API_URL = "api_url";
     public static final String EPG_URL = "epg_url";
     public static final String SHOW_PREVIEW = "show_preview";
@@ -25,6 +26,7 @@ public class HawkConfig {
     public static final String HISTORY_NUM = "history_num";
     public static final String SEARCH_VIEW = "search_view"; // 0 列表 1 缩略图
     public static final String LIVE_CHANNEL = "last_live_channel_name";
+    public static final String PIC_IN_PIC = "pic_in_pic"; // true = on, false = off
     public static final String LIVE_CHANNEL_REVERSE = "live_channel_reverse";
     public static final String LIVE_CROSS_GROUP = "live_cross_group";
     public static final String LIVE_CONNECT_TIMEOUT = "live_connect_timeout";
@@ -35,7 +37,15 @@ public class HawkConfig {
     public static final String SUBTITLE_TIME_DELAY = "subtitle_time_delay";
     public static final String SOURCES_FOR_SEARCH = "checked_sources_for_search";
     public static final String HOME_REC_STYLE = "home_rec_style";
+    public static final String STORAGE_DRIVE_SORT = "storage_drive_sort";//存储
     public static final String NOW_DATE = "now_date"; //当前日期
     public static final String REMOTE_TVBOX = "remote_tvbox_host";
-    public static final String IJK_CACHE_PLAY = "ijk_cache_play";
+    public static final String SETTING_LIVE = "setting_live";//直播
+    public static final String IJK_CACHE_PLAY = "ijk_cache_play";//ijk缓存
+    
+     public static final String THIRD_PARTY_PLAYER = "third_party_player"; // 外部播放器
+    public static final String FORGET_NEW_VERSION = "forget_new_version";
+    public static final String DISPLAY_LOADING_SPEED = "display_loading_speed";
+    public static final String HOME_VIEW_STYLE = "home_view_style";
+    
 }
